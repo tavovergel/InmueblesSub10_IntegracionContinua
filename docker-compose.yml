@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./Frontend/InmueblesSub10Front
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://backend:3001
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
