@@ -2,18 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                echo 'Descargando código del repositorio...'
-                checkout scm
-            }
-        }
-
         stage('Build Frontend') {
             steps {
-                echo 'Construyendo frontend...'
+                echo "Construyendo frontend..."
                 sh '''
-                    cd frontend
+                    cd Frontend
                     npm install
                     npm run build
                 '''
@@ -22,9 +15,9 @@ pipeline {
 
         stage('Build Backend') {
             steps {
-                echo 'Construyendo backend...'
+                echo "Construyendo backend..."
                 sh '''
-                    cd backend
+                    cd Backend
                     npm install
                 '''
             }
@@ -32,8 +25,11 @@ pipeline {
 
         stage('Pruebas') {
             steps {
-                echo 'Ejecutando pruebas (simuladas)...'
-                sh 'echo "No hay pruebas configuradas aún"'
+                echo "Ejecutando pruebas..."
+                sh '''
+                    cd Backend
+                    npm test || true
+                '''
             }
         }
     }
